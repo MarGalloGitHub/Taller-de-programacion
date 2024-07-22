@@ -1,0 +1,91 @@
+programa cosechador
+procesos
+  proceso hacerEsquina(ES cantFlores: numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso llevarALdeposito(ES cantFlores: numero ; ES avanzadas: numero ;E Ini1: numero; E Ini2: numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir cantFlores
+      depositarFlor
+    Pos(Ini1,Ini2)
+    LiberarEsquina(50,50)
+    EnviarMensaje(0,cosechador)
+    cantFlores:= 0
+    avanzadas:= 0
+  fin
+areas
+  deposito: AreaC(50,50,50,50)
+  areaC: AreaP(1,5,1,5)
+  area1: AreaP(1,3,100,3)
+  area2: AreaP(1,4,100,4)
+robots
+  robot tipo1
+  variables
+    TERMINA: boolean
+    faltan: numero
+    num: numero
+    cantFlores: numero
+  comenzar
+    cantFlores:= 0
+    TERMINA:= F
+    faltan:= 0
+    mientras(TERMINA = F)
+      RecibirMensaje(num,*)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      hacerEsquina(cantFlores)
+      Pos(1,5)
+      LiberarEsquina(50,50)
+      faltan:= faltan + num
+      si(faltan = 2)
+        TERMINA:= V
+    Pos(50,50)
+    hacerEsquina(cantFlores)
+    Pos(1,5)
+    Informar(cantFlores)
+  fin
+  robot tipo2
+  variables
+    cantFlores: numero
+    avanzadas: numero
+    Ini1: numero
+    Ini2: numero
+  comenzar
+    cantFlores:= 0
+    avanzadas:= 0
+    derecha
+    mientras(PosAv < 100)
+      hacerEsquina(cantFlores)
+      si((cantFlores = 10) || (avanzadas = 5))
+        Ini1:= PosAv
+        Ini2:= PosCa
+        llevarALdeposito(cantFlores,avanzadas,Ini1,Ini2)
+      mover
+      avanzadas:= avanzadas + 1
+    hacerEsquina(cantFlores)
+    si((cantFlores = 10)||(avanzadas = 5))
+      Ini1:= PosAv
+      Ini2:= PosCa
+      llevarALdeposito(cantFlores,avanzadas)
+    EnviarMensaje(1,cosechador)
+  fin
+variables
+  cosechador: tipo1
+  recolector1: tipo2
+  recolector2: tipo2
+comenzar
+  AsignarArea(cosechador,areaC)
+  AsignarArea(cosechador,deposito)
+  AsignarArea(recolector1,area1)
+  AsignarArea(recolector1,deposito)
+  AsignarArea(recolector2,area2)
+  AsignarArea(recolector2,deposito)
+  Iniciar(cosechador,1,5)
+  Iniciar(recolector1,1,3)
+  Iniciar(recolector2,1,4)
+fin

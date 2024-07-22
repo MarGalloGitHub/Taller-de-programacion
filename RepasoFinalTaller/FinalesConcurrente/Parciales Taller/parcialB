@@ -1,0 +1,123 @@
+programa parcialTURNOb
+procesos
+  proceso cantidadINFORMAR(E quien: numero ; E primero: numero ; ES cantINFORMAR: numero)
+  variables
+    cantFlores: numero
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(cantFlores,F1)
+    sino
+      si(quien = 2)
+        RecibirMensaje(cantFlores,F2)
+    si(quien = primero)
+      cantINFORMAR:= cantINFORMAR + cantFlores
+  fin
+  proceso hacerEsquina(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+areas
+  areaF: AreaP(100,100,100,100)
+  areaF11: AreaP(6,1,6,1)
+  areaCOMP: AreaPC(1,2,61,50)
+  areaF12: AreaP(6,51,6,61)
+robots
+  robot tipo1
+  variables
+    calleRandom: numero
+    quien: numero
+    cantFlores: numero
+    puesto: numero
+    primero: numero
+    cantINFORMAR: numero
+  comenzar
+    puesto:= 0
+    Random(calleRandom,2,50)
+    EnviarMensaje(calleRandom,F2)
+    EnviarMensaje(calleRandom,F1)
+    EnviarMensaje(1,F1)
+    EnviarMensaje(2,F2)
+    repetir 2
+      RecibirMensaje(quien,*)
+      puesto:= puesto + 1
+      si(puesto = 1)
+        primero:= quien
+    repetir 2
+      RecibirMensaje(quien,*)
+      cantidadINFORMAR(quien,primero,cantINFORMAR)
+    Informar(primero)
+    Informar(cantINFORMAR)
+  fin
+  robot tipo2
+  variables
+    quien: numero
+    cantFlores: numero
+    cantCHOQUE: numero
+    choque: numero
+  comenzar
+    cantFlores:= 0
+    RecibirMensaje(cantCHOQUE,fiscalizador)
+    RecibirMensaje(quien,fiscalizador)
+    choque:= cantCHOQUE - 2
+    repetir choque
+      hacerEsquina(cantFlores)
+      mover
+    hacerEsquina(cantFlores)
+    BloquearEsquina(6,cantCHOQUE)
+    mover
+    hacerEsquina(cantFlores)
+    mover
+    LiberarEsquina(6,cantCHOQUE)
+    EnviarMensaje(quien,fiscalizador)
+    mientras(PosCa < 61)
+      hacerEsquina(cantFlores)
+      mover
+    hacerEsquina(cantFlores)
+    EnviarMensaje(quien,fiscalizador)
+    EnviarMensaje(cantFlores,fiscalizador)
+  fin
+  robot tipo3
+  variables
+    calleX: numero
+    avenida: numero
+    quien: numero
+    cantFlores: numero
+  comenzar
+    cantFlores:= 0
+    RecibirMensaje(calleX,fiscalizador)
+    RecibirMensaje(quien,fiscalizador)
+    Pos(1,calleX)
+    derecha
+    repetir 4
+      hacerEsquina(cantFlores)
+      mover
+    hacerEsquina(cantFlores)
+    BloquearEsquina(6,calleX)
+    mover
+    hacerEsquina(cantFlores)
+    mover
+    LiberarEsquina(6,calleX)
+    EnviarMensaje(quien,fiscalizador)
+    repetir 54  
+      hacerEsquina(cantFlores)
+      mover
+    hacerEsquina(cantFlores)
+    EnviarMensaje(quien,fiscalizador)
+    EnviarMensaje(cantFlores,fiscalizador)
+  fin
+variables
+  F1: tipo2
+  F2: tipo3
+  fiscalizador: tipo1
+comenzar
+  AsignarArea(fiscalizador,areaF)
+  AsignarArea(F1,areaF11)
+  AsignarArea(F1,areaCOMP)
+  AsignarArea(F1,areaF12)
+  AsignarArea(F2,areaCOMP)
+  Iniciar(fiscalizador,100,100)
+  Iniciar(F1,6,1)
+  Iniciar(F2,1,2)
+fin
