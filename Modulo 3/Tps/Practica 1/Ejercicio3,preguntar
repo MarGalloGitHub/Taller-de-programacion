@@ -1,0 +1,77 @@
+programa ejercicio3
+procesos
+  proceso hacerEsquina (ES v: boolean)
+  variables
+    cantFlores: numero
+    cantPapeles: numero
+  comenzar
+    cantFlores:= 0
+    cantPapeles:= 0
+    si(HayFlorEnLaEsquina)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+    si(HayPapelEnLaEsquina)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+    si((cantPapeles - cantFlores)= 1)
+      v:= V
+    repetir cantFlores
+      depositarFlor
+    repetir cantPapeles
+      depositarPapel
+  fin
+  proceso hacerDireccion(E largo: numero ; ES cantEsquinas: numero)
+  variables
+    v: boolean
+  comenzar
+    repetir largo
+      v:= F
+      hacerEsquina(v)
+      si(v = V)
+        cantEsquinas:= cantEsquinas + 1
+      mover
+  fin
+  proceso hacerEscalera(ES cantEscalon: numero)
+  variables
+    ancho: numero
+    alto: numero
+    cantEsquinas: numero
+    largo: numero
+  comenzar
+    largo:= 1
+    repetir 4
+      cantEsquinas:= 0
+      hacerDireccion(largo,cantEsquinas)
+      derecha
+      hacerDireccion(largo,cantEsquinas)
+      repetir 3
+        derecha
+      largo:= largo + 1
+      si (cantEsquinas > 1)
+        cantEscalon:= cantEscalon + 1
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantEscalon: numero
+  comenzar
+    cantEscalon:= 0
+    hacerEscalera(cantEscalon)
+    Informar(cantEscalon)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  Iniciar(robot1,12,14)
+  Iniciar(robot2,17,10)
+  Iniciar(robot3,22,6)
+fin

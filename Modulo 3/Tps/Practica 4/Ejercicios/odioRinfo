@@ -1,0 +1,145 @@
+programa odioRinfo
+procesos
+  proceso listo (E termine: boolean ; E quien: numero)
+  comenzar
+    si(quien = 1)
+      EnviarMensaje(termine,cliente1)
+    sino
+      si(quien = 2)
+        EnviarMensaje(termine,cliente2)
+      sino
+        si(quien = 3)
+          EnviarMensaje(termine,cliente3)
+  fin
+  proceso cuantasFlores(E quien: numero ; ES cantFlores: numero)
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(cantFlores,cliente1)
+    sino
+      si(quien = 2)
+        RecibirMensaje(cantFlores,cliente2)
+      sino
+        si(quien = 3)
+          RecibirMensaje(cantFlores,cliente3)
+  fin
+  proceso quienSoy(ES quien:numero ; E Avenida: numero)
+  comenzar
+    si(Avenida = 1)
+      quien:= 1
+    sino
+      si(Avenida = 2)
+        quien:= 2
+      sino
+        si(Avenida = 3)
+          quien:= 3
+  fin
+  proceso posicionROBOT(ES Avenida: numero ; ES Calle: numero ; E quien: numero)
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(Avenida,cliente1)
+      RecibirMensaje(Calle,cliente1)
+    sino
+      si(quien = 2)
+        RecibirMensaje(Avenida,cliente2)
+        RecibirMensaje(Calle,cliente2)
+      sino
+        si(quien = 3)
+          RecibirMensaje(Avenida,cliente3)
+          RecibirMensaje(Calle,cliente3)
+  fin
+areas
+  areaS: AreaP(100,100,100,100)
+  area1: AreaPC(1,1,1,100)
+  area2: AreaPC(2,1,2,100)
+  area3: AreaPC(3,1,3,100)
+robots
+  robot tipo1
+  variables
+    faltan: numero
+    cantFlores: numero
+    cantPROPIA: numero
+    quien: numero
+    Avenida: numero
+    Calle: numero
+    termine: boolean
+    TERMINA: boolean
+  comenzar
+    TERMINA:= F
+    termine:= V
+    cantPROPIA:= 0
+    mientras(HayFlorEnLaEsquina) 
+      tomarFlor
+      cantPROPIA:= cantPROPIA + 1
+    faltan:= 3
+    mientras(TERMINA = F)
+      cantFlores:= 0
+      RecibirMensaje(quien,*)
+      cuantasFlores(quien,cantFlores)
+      si(cantFlores <> 0)
+        posicionROBOT(Avenida,Calle,quien)
+        Pos(Avenida,Calle)
+        mientras(cantFlores <> 0)
+          depositarFlor
+          cantFlores:= cantFlores - 1
+        Pos(100,100)
+        listo(termine,quien)
+      sino
+        faltan:= faltan - 1
+        si(faltan = 0)
+          TERMINA:= V
+  fin
+  robot tipo2
+  variables
+    quien: numero
+    cantFlores: numero
+    Avenida: numero
+    Calle: numero
+    termino: boolean
+    TERMINA: boolean
+  comenzar
+    TERMINA:= F
+    Avenida:= PosAv
+    Calle:= PosCa
+    quienSoy(quien,Avenida)
+    mientras(TERMINA = F )
+      cantFlores:= 0
+      Random(cantFlores,1,4)
+      EnviarMensaje(quien,servidor)
+      EnviarMensaje(cantFlores,servidor)
+      EnviarMensaje(Avenida,servidor)
+      EnviarMensaje(Calle + 1,servidor)
+      RecibirMensaje(termino,servidor)
+      si(PosCa < 100)
+        mover
+        mientras(HayFlorEnLaEsquina)
+          tomarFlor
+          cantFlores:= cantFlores + 1
+        Pos(Avenida,Calle)
+        mientras(HayFlorEnLaBolsa)
+          depositarFlor
+          cantFlores:= cantFlores - 1
+          si(PosCa < 100)
+            mover
+            Calle:= Calle + 1
+      sino
+        EnviarMensaje(0,servidor)
+        TERMINA:= V
+  fin
+variables
+  servidor: tipo1
+  cliente1: tipo2
+  cliente2: tipo2
+  cliente3: tipo2
+comenzar
+  AsignarArea(servidor,areaS)
+  AsignarArea(servidor,area1)
+  AsignarArea(servidor,area2)
+  AsignarArea(servidor,area3)
+  AsignarArea(cliente1,area1)
+  AsignarArea(cliente2,area2)
+  AsignarArea(cliente3,area3)
+  Iniciar(servidor,100,100)
+  Iniciar(cliente1,1,1)
+  Iniciar(cliente2,2,1)
+  Iniciar(cliente3,3,1)
+fin

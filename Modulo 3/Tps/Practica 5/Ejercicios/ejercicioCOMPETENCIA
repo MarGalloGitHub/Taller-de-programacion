@@ -1,0 +1,140 @@
+programa competencia
+procesos
+  proceso segmentoJODIDO1 (ES cantFlores: numero)
+  comenzar
+    hacerEsquinaROJA(cantFlores)
+    BloquearEsquina(PosAv,98)
+    mover
+    hacerEsquinaROJA(cantFlores)
+    BloquearEsquina(PosAv,99)
+    mover
+    LiberarEsquina(PosAv,98)
+    hacerEsquinaROJA(cantFlores)
+    mover
+    LiberarEsquina(PosAv,99)
+    hacerEsquinaROJA(cantFlores)
+  fin
+  proceso segmentoJodido2(ES cantPapeles: numero)
+  comenzar
+    hacerEsquinaAZUL(cantPapeles)
+    BloquearEsquina(2,PosCa)
+    mover
+    hacerEsquinaAZUL(cantPapeles)
+    BloquearEsquina(3,PosCa)
+    mover
+    LiberarEsquina(2,PosCa)
+    hacerEsquinaAZUL(cantPapeles)
+    mover
+    LiberarEsquina(3,PosCa)
+  fin
+  proceso hacerEsquinaROJA(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso hacerEsquinaAZUL(ES cantPapeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  proceso actualizarCantidades(E quien: numero; ES cant1: numero ; ES cant2: numero)
+  variables
+    cantCOMP: numero
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(cantCOMP,rojo1)
+      cant1:= cant1 + cantCOMP
+    sino
+      si(quien = 2)
+        RecibirMensaje(cantCOMP,rojo2)
+        cant1:= cant1 + cantCOMP
+      sino
+        si(quien = 3)
+          RecibirMensaje(cantCOMP,azul1)
+          cant2:= cant2 + cantCOMP
+        sino 
+          si(quien = 4)
+            RecibirMensaje(cantCOMP,azul2)
+            cant2:= cant2 + cantCOMP
+  fin
+  proceso actualizarMaximo (E cant1: numero ; E cant2: numero ; ES quienMax: numero)
+  comenzar
+    si(cant1 > cant2)
+      quienMax:= 1
+    sino
+      quienMax:= 2
+    si(cant1 = cant2)
+      quienMax:= 99
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantFlores: numero
+    quien: numero
+  comenzar
+    RecibirMensaje(quien,fiscalizador)
+    cantFlores:= 0
+    repetir 96
+      hacerEsquinaROJA(cantFlores)
+      mover
+    segmentoJODIDO1(cantFlores)
+    EnviarMensaje(quien,fiscalizador)
+    EnviarMensaje(cantFlores,fiscalizador)
+  fin
+  robot tipo2
+  variables
+    cantPapeles:numero
+    quien: numero
+  comenzar
+    derecha
+    RecibirMensaje(quien,fiscalizador)
+    cantPapeles:= 0
+    segmentoJodido2(cantPapeles)
+    repetir 95
+      hacerEsquinaAZUL(cantPapeles)
+      mover
+    hacerEsquinaAZUL(cantPapeles)
+    EnviarMensaje(quien,fiscalizador)
+    EnviarMensaje(cantPapeles,fiscalizador)
+  fin
+  robot tipo3
+  variables
+    quien: numero
+    quienMax: numero
+    cant1: numero
+    cant2: numero
+  comenzar
+    cant1:= 0
+    cant2:= 0
+    EnviarMensaje(1,rojo1)
+    EnviarMensaje(2,rojo2)
+    EnviarMensaje(3,azul1)
+    EnviarMensaje(4,azul2)
+    repetir 4
+      RecibirMensaje(quien, *)
+      actualizarCantidades(quien,cant1,cant2)
+    actualizarMaximo(cant1,cant2,quienMax)  
+    Informar(quienMax)
+  fin
+variables
+  fiscalizador: tipo3
+  rojo1: tipo1
+  rojo2: tipo1
+  azul1: tipo2
+  azul2: tipo2
+comenzar
+  AsignarArea(fiscalizador,ciudad)
+  AsignarArea(rojo1,ciudad)
+  AsignarArea(rojo2,ciudad)
+  AsignarArea(azul1,ciudad)
+  AsignarArea(azul2,ciudad)
+  Iniciar(fiscalizador,1,1)
+  Iniciar(rojo1,2,1)
+  Iniciar(rojo2,3,1)
+  Iniciar(azul1,1,98)
+  Iniciar(azul2,1,99)
+fin

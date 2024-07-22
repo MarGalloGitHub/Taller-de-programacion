@@ -1,0 +1,88 @@
+programa odioRinfoSEcolgo
+procesos
+  proceso hacerTODOproduc(ES cantPapeles: numero ;E Avenida: numero ; E Calle: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+      si(cantPapeles = 5)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir 5
+          depositarPapel
+        Pos(Avenida,Calle)
+        LiberarEsquina(50,50)
+        cantPapeles:= 0
+  fin
+areas
+  area1: AreaP(5,1,5,100)
+  area2: AreaP(10,1,10,100)
+  area3: AreaP(11,1,11,1)
+  area4: AreaP(12,1,12,1)
+  areaPAPELES: AreaC(50,50,50,50)
+robots
+  robot tipo1
+  variables
+    cantPapeles: numero
+    Avenida: numero
+    Calle: numero
+  comenzar
+    Avenida:= PosAv
+    Calle:= PosCa
+    repetir 99
+      hacerTODOproduc(cantPapeles,Avenida,Calle)
+      Calle:= Calle + 1
+      mover
+    hacerTODOproduc(cantPapeles,Avenida,Calle)
+  fin
+  robot tipo2
+  variables
+    cantAleatoria: numero
+    Avenida: numero
+    Calle: numero
+    cantPapeles: numero
+    TERMINA: boolean
+    faltan: numero
+  comenzar
+    faltan:= 0
+    TERMINA:= F
+    Avenida:= PosAv
+    Calle:= PosCa
+    mientras(TERMINA = F)
+      cantPapeles:= 0
+      Random(cantAleatoria,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      mientras((HayPapelEnLaEsquina) && (cantPapeles <> cantAleatoria))
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+      Pos(Avenida,Calle)
+      LiberarEsquina(50,50)
+      repetir cantPapeles
+        depositarPapel
+      si(cantPapeles = 0)
+        faltan:= faltan + 1 
+      sino
+        faltan:= 0 
+      si(faltan = 8)
+        TERMINA:= V
+  fin
+variables
+  produc1: tipo1
+  produc2: tipo1
+  consumi1: tipo2
+  consumi2: tipo2
+comenzar
+  AsignarArea(produc1,area1)
+  AsignarArea(produc1,areaPAPELES)
+  AsignarArea(produc2,area2)
+  AsignarArea(produc2,areaPAPELES)
+  AsignarArea(consumi1,area3)
+  AsignarArea(consumi1,areaPAPELES)
+  AsignarArea(consumi2,area4)
+  AsignarArea(consumi2,areaPAPELES)
+  Iniciar(produc1,5,1)
+  Iniciar(produc2,10,1)
+  Iniciar(consumi1,11,1)
+  Iniciar(consumi2,12,1)
+fin

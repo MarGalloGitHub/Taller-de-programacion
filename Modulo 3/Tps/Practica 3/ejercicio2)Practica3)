@@ -1,0 +1,141 @@
+programa carrera
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarFlores(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso juntarPapeles(ES cantPapeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  proceso hacerViajeFlores(ES cantFlores: numero)
+  variables
+    largo: numero
+  comenzar
+    largo:= 5
+    BloquearEsquina(10,10)
+    repetir 5
+      repetir largo
+        mover
+      derecha
+      juntarFlores(cantFlores)
+      repetir largo
+        mover
+      juntarFlores(cantFlores)
+      izquierda
+      largo:= largo - 1
+    izquierda
+    mover
+    LiberarEsquina(10,10)
+    repetir 2
+      mover
+    juntarFlores(cantFlores)
+    derecha
+    largo:= 2
+    repetir 3
+      juntarFlores(cantFlores)
+      repetir largo
+        mover
+      juntarFlores(cantFlores)
+      izquierda
+      repetir largo
+        mover
+      juntarFlores(cantFlores)
+      derecha
+      largo:= largo + 1
+    repetir largo
+      mover    
+  fin
+  proceso hacerViajePapeles(ES cantPapeles: numero)
+  variables
+    largo: numero
+  comenzar
+    largo:= 5
+    BloquearEsquina(10,10)
+    repetir 5
+      repetir largo
+        mover
+      juntarPapeles(cantPapeles)
+      izquierda
+      repetir largo
+        mover
+      juntarPapeles(cantPapeles)
+      derecha
+      largo:= largo - 1
+    derecha
+    mover
+    LiberarEsquina(10,10)
+    repetir 2
+      mover
+    izquierda
+    largo:= 2
+    repetir 3
+      juntarPapeles(cantPapeles)
+      repetir largo
+        mover
+      juntarPapeles(cantPapeles)
+      derecha
+      repetir largo
+        mover
+      juntarPapeles(cantPapeles)
+      izquierda
+      largo:= largo + 1
+    repetir largo
+      mover
+  fin
+areas
+  carrera: AreaC(1,1,31,31)
+robots
+  robot tipo1
+  variables
+    cantFlores: numero
+    quien: numero
+  comenzar
+    cantFlores:= 0
+    RecibirMensaje(quien,jefe)
+    hacerViajeFlores(cantFlores)
+    Informar(cantFlores)
+    EnviarMensaje(quien,jefe)
+  fin
+  robot tipo2
+  variables
+    quien: numero
+    cantPapeles: numero
+  comenzar
+    cantPapeles:= 0
+    RecibirMensaje(quien,jefe)
+    hacerViajePapeles(cantPapeles)
+    Informar(cantPapeles)
+    EnviarMensaje(quien,jefe)
+  fin
+  robot tipo3
+  variables 
+    quien: numero
+  comenzar
+    EnviarMensaje(1,corredor1)
+    EnviarMensaje(2,corredor2)
+    RecibirMensaje(quien,*)
+    Informar(quien)
+    RecibirMensaje(quien,*)
+  fin
+variables
+  corredor1: tipo1
+  corredor2: tipo2
+  jefe: tipo3
+comenzar
+  AsignarArea(corredor1,carrera)
+  AsignarArea(corredor2,carrera)
+  AsignarArea(jefe,carrera)
+  Iniciar(jefe,15,1)
+  Iniciar(corredor1,1,1)
+  Iniciar(corredor2,31,1)
+fin

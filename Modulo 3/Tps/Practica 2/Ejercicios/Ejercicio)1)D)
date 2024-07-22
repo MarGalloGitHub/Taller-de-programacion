@@ -1,0 +1,98 @@
+programa ejercicio1
+procesos
+  proceso sacarDiferencia(ES max: numero ; ES min: numero ; E cantFlores: numero ; ES rmax: numero ; E quien: numero)
+  comenzar
+    si(cantFlores > max)
+      max:= cantFlores
+      rmax:= quien
+    si(cantFlores < min)
+      min:= cantFlores
+  fin
+  proceso hacerAvenida(ES cantFlores: numero)
+  comenzar
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+areas
+  ciudad: AreaPC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantFlores: numero
+    quien: numero
+  comenzar
+    RecibirMensaje(quien,fiscalizador)
+    cantFlores:= 0
+    hacerAvenida(cantFlores)
+    EnviarMensaje(quien,fiscalizador)
+    EnviarMensaje(cantFlores,fiscalizador)
+  fin
+  robot tipo2
+  variables
+    cantFlores: numero
+    min: numero
+    max: numero
+    rmax: numero
+    quien: numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(5,robot5)
+    EnviarMensaje(6,robot6)
+    min:= 90
+    max:= 0
+    repetir 6
+      RecibirMensaje(quien,*)
+      si(quien = 1)
+        RecibirMensaje(cantFlores,robot1)
+      sino
+        si(quien = 2)
+          RecibirMensaje(cantFlores,robot2)
+        sino
+          si(quien = 3)
+            RecibirMensaje(cantFlores,robot3)
+          sino
+            si(quien = 4)
+              RecibirMensaje(cantFlores,robot4)
+            sino
+              si(quien = 5)
+                RecibirMensaje(cantFlores,robot5)
+              sino
+                si(quien = 6)
+                  RecibirMensaje(cantFlores,robot6)
+      sacarDiferencia(max,min,cantFlores,rmax,quien)
+    Informar(max - min)
+    Informar(rmax)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+  robot4: tipo1
+  robot5: tipo1
+  robot6: tipo1
+  fiscalizador: tipo2
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(robot5,ciudad)
+  AsignarArea(robot6,ciudad)
+  AsignarArea(fiscalizador,ciudad)
+  Iniciar(fiscalizador,2,1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,21,30)
+  Iniciar(robot4,31,40)
+  Iniciar(robot5,41,50)
+  Iniciar(robot6,51,60)
+fin

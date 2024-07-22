@@ -1,0 +1,85 @@
+programa ejercicio2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso hacerEsquina(ES flores: numero ; ES papeles: numero)
+  variables
+    floresEsquina: numero
+    papelesEsquina: numero
+  comenzar
+    floresEsquina:= 0
+    papelesEsquina:= 0
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+      floresEsquina:= floresEsquina + 1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+      papelesEsquina:= papelesEsquina + 1
+    repetir floresEsquina
+      depositarFlor
+    repetir papelesEsquina
+      depositarPapel   
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot trabajador
+  variables
+    cantFlores: numero
+    cantPapeles: numero
+    alto: numero
+  comenzar
+    cantFlores:= 0
+    cantPapeles:= 0
+    RecibirMensaje (alto,jefe)
+    repetir 4
+      repetir alto
+        hacerEsquina(cantFlores,cantPapeles)
+        mover
+      derecha
+      hacerEsquina(cantFlores,cantPapeles)
+      mover
+      izquierda
+    EnviarMensaje(cantFlores,jefe)
+    EnviarMensaje(cantPapeles,jefe)
+  fin
+  robot jefe
+  variables
+    cantFlores: numero
+    totalFlores: numero
+    cantPapeles: numero
+    totalPapeles: numero
+  comenzar
+    totalFlores:= 0
+    totalPapeles:= 0
+    EnviarMensaje(2,robot1)
+    EnviarMensaje(5,robot2)
+    EnviarMensaje(1,robot3)
+    repetir 3
+      RecibirMensaje(cantFlores,*)
+      totalFlores:= totalFlores + cantFlores
+      RecibirMensaje(cantPapeles,*)
+      totalPapeles:= totalPapeles + cantPapeles
+    Informar(totalFlores)
+    Informar(totalPapeles)
+  fin 
+variables
+  robot1: trabajador
+  robot2: trabajador
+  robot3: trabajador
+  jefe: jefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar(jefe,1,1)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,7,1)
+  Iniciar(robot3,12,1)
+fin

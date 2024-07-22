@@ -1,0 +1,99 @@
+programa juntadoresBARRERA 
+procesos 
+  proceso hacerEsquina(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      cantFlores:= cantFlores + 1
+      tomarFlor
+  fin
+  proceso esperar(E quien: numero)
+  variables
+    listo: boolean
+  comenzar
+    listo:= V
+    si(quien = 1)
+      EnviarMensaje(listo,recolector2)
+      EnviarMensaje(listo,recolector3)
+    sino
+      si(quien = 2)
+        EnviarMensaje(listo,recolector1)
+        EnviarMensaje(listo,recolector3)
+      sino
+        si(quien = 3)
+          EnviarMensaje(listo,recolector1)
+          EnviarMensaje(listo,recolector2)
+    repetir 2
+      RecibirMensaje(listo,*)       
+  fin
+  proceso llevarAdeposito(E avenida: numero ; E calle: numero ; ES cantFlores: numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir cantFlores
+      depositarFlor
+    Pos(avenida,calle)
+    LiberarEsquina(50,50)
+  fin
+areas 
+  deposito: AreaC(50,50,50,50) 
+  areaF: AreaP(1,4,1,4) 
+  area1: AreaP(1,1,100,1) 
+  area2: AreaP(1,2,100,2)
+  area3: AreaP(1,3,100,3)
+robots
+  robot tipo1
+  variables
+    quien: numero
+    cantFlores: numero
+  comenzar
+    cantFlores:= 0
+    EnviarMensaje(1,recolector1)
+    EnviarMensaje(2,recolector2)
+    EnviarMensaje(3,recolector3)
+    repetir 3
+      RecibirMensaje(quien,*)
+    Pos(50,50)
+    hacerEsquina(cantFlores)
+    Informar(cantFlores)
+  fin
+  robot tipo2
+  variables
+    cantFlores2: numero
+    quien: numero
+    Ini1: numero
+    Ini2: numero
+  comenzar
+    derecha
+    RecibirMensaje(quien,fiscalizador)
+    repetir 11
+      cantFlores2:= 0
+      repetir 9
+        hacerEsquina(cantFlores2)
+        mover
+      hacerEsquina(cantFlores2)
+      Ini1:= PosAv
+      Ini2:= PosCa
+      llevarAdeposito(Ini1,Ini2,cantFlores2)
+      esperar(quien)
+    EnviarMensaje(quien,fiscalizador)
+  fin
+variables
+  fiscalizador: tipo1
+  recolector1: tipo2
+  recolector2: tipo2
+  recolector3: tipo2
+comenzar
+  AsignarArea(fiscalizador,areaF)
+  AsignarArea(recolector1,area1)
+  AsignarArea(recolector2,area2)
+  AsignarArea(recolector3,area3)
+  AsignarArea(fiscalizador,deposito)
+  AsignarArea(recolector1,deposito)
+  AsignarArea(recolector2,deposito)
+  AsignarArea(recolector3,deposito)
+  Iniciar(fiscalizador,1,4)
+  Iniciar(recolector1,1,1)
+  Iniciar(recolector2,1,2)
+  Iniciar(recolector3,1,3)
+fin
+ 

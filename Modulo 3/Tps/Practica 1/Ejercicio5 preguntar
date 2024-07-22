@@ -1,0 +1,94 @@
+programa ejercicio5
+procesos
+  proceso limpiarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso limpiarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso dejarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin 
+  proceso dejarPapeles
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  proceso hacerCaminoFlores(E largo : numero)
+  comenzar
+    repetir largo
+      limpiarFlores
+      mover
+    limpiarFlores
+    dejarFlores
+  fin
+  proceso hacerCaminoPapeles(E largo: numero)
+  comenzar
+    repetir largo
+      limpiarPapeles
+      mover
+    limpiarPapeles
+    dejarPapeles
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    numCalles: numero
+  comenzar
+    numCalles:= 15
+    derecha
+    hacerCaminoFlores(numCalles)
+    Pos(1,75)
+    hacerCaminoFlores(numCalles)
+  fin
+  robot tipo2
+  variables
+    numCalles: numero
+  comenzar
+    numCalles:= 20
+    hacerCaminoPapeles(numCalles)
+    Pos(80,80)
+    hacerCaminoPapeles(numCalles)
+  fin
+  robot tipo3
+  variables
+    numCalles: numero
+  comenzar
+    numCalles:= 30
+    derecha
+    hacerCaminoFlores(numCalles)
+    Pos(70,10)
+    hacerCaminoFlores(numCalles)
+  fin
+  robot tipo4
+  variables
+    numCalles: numero
+  comenzar
+    numCalles:= 10
+    hacerCaminoPapeles(numCalles)
+    Pos(15,1)
+    hacerCaminoPapeles(numCalles)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo3
+  robot4: tipo4
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  Iniciar(robot1,1,80)
+  Iniciar(robot2,75,80)
+  Iniciar(robot3,70,15)
+  Iniciar(robot4,10,1)
+fin

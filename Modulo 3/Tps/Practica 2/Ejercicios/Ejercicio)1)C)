@@ -1,0 +1,64 @@
+programa ejercicio1
+procesos
+  proceso hacerAvenida(ES cantFlores: numero)
+  comenzar
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+areas
+  ciudad: AreaPC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantFlores: numero
+  comenzar
+    cantFlores:= 0
+    hacerAvenida(cantFlores)
+    EnviarMensaje(cantFlores,fiscalizador)
+  fin
+  robot tipo2
+  variables
+    cantFlores: numero
+    min: numero
+    max: numero
+  comenzar
+    min:= 90
+    max:= 0
+    repetir 6
+      RecibirMensaje(cantFlores,*)
+      si(cantFlores > max)
+        max:= cantFlores
+      si(cantFlores < min)
+        min:= cantFlores
+    Informar(max - min)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+  robot4: tipo1
+  robot5: tipo1
+  robot6: tipo1
+  fiscalizador: tipo2
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(robot5,ciudad)
+  AsignarArea(robot6,ciudad)
+  AsignarArea(fiscalizador,ciudad)
+  Iniciar(fiscalizador,2,1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,21,30)
+  Iniciar(robot4,31,40)
+  Iniciar(robot5,41,50)
+  Iniciar(robot6,51,60)
+fin

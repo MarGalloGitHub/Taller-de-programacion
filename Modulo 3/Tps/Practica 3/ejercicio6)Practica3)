@@ -1,0 +1,156 @@
+programa ejercicio6A
+procesos
+  proceso mandarPosicion(E quien: numero ; E aux: numero)
+  variables
+    calle: numero
+  comenzar
+    si(aux = 1)
+      calle:= 20
+    sino
+      si(aux = 2)
+        calle:= 21
+      sino
+        si(aux = 3)
+          calle:= 22
+    si(quien = 1)
+      EnviarMensaje(calle,robot1)
+    sino
+      si(quien = 2)
+        EnviarMensaje(calle,robot2)
+      sino
+        si(quien = 3)
+          EnviarMensaje(calle,robot3)
+  fin
+  proceso juntarFlores(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso juntarPapeles(ES cantPapeles: numero)
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+areas
+  areaF: AreaP(1,1,1,1)
+  areaTrabajo: AreaPC(2,2,16,16)
+  area1: AreaP(1,20,100,20)
+  area2: AreaP(1,21,100,21)
+  area3: AreaP(1,22,100,22)
+robots
+  robot tipo1
+  variables
+    cantFlores: numero
+    largo: numero
+    quien: numero
+    calle: numero
+  comenzar
+    largo:= 6
+    cantFlores:= 0
+    RecibirMensaje(quien,fiscalizador)
+    repetir 4
+      repetir largo
+        juntarFlores(cantFlores)
+        mover
+      derecha
+    EnviarMensaje(quien,fiscalizador)
+    RecibirMensaje(calle,fiscalizador)
+    Pos(1,calle)
+    derecha
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+      mover
+  fin
+  robot tipo2
+  variables
+    quien: numero
+    cantFlores: numero
+    cantPapeles: numero
+    longitud: numero
+    calle: numero
+  comenzar
+    cantFlores:= 0
+    cantPapeles:= 0
+    longitud:= 10
+    RecibirMensaje(quien,fiscalizador)
+    repetir 4
+      repetir longitud
+        juntarFlores(cantFlores)
+        juntarPapeles(cantPapeles)
+        mover
+      derecha
+    EnviarMensaje(quien,fiscalizador)
+    RecibirMensaje(calle,fiscalizador)
+    Pos(1,calle)
+    derecha
+    mientras(HayPapelEnLaBolsa)|(HayFlorEnLaBolsa)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      mover
+  fin
+  robot tipo3
+  variables
+    cantPapeles: numero
+    longitud: numero
+    quien: numero
+    calle: numero
+  comenzar
+    longitud:= 7
+    cantPapeles:= 0
+    RecibirMensaje(quien,fiscalizador)
+    repetir 4
+      repetir longitud
+        juntarPapeles(cantPapeles)
+        mover
+      derecha
+    EnviarMensaje(quien,fiscalizador)
+    RecibirMensaje(calle,fiscalizador)
+    Pos(1,calle)
+    derecha
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+      mover
+  fin
+  robot tipo4
+  variables
+    quien: numero
+    aux: numero
+  comenzar
+    aux:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    repetir 3
+      RecibirMensaje(quien,*)
+      aux:= aux + 1
+      mandarPosicion(quien,aux)
+  fin
+variables
+  fiscalizador: tipo4
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo3
+comenzar
+  AsignarArea(fiscalizador,areaF)
+  AsignarArea(robot1,areaTrabajo)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot1,area2)
+  AsignarArea(robot1,area3)
+  AsignarArea(robot2,areaTrabajo)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot2,area3)
+  AsignarArea(robot3,areaTrabajo)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot3,area2)
+  AsignarArea(robot3,area3)
+  Iniciar(fiscalizador,1,1)
+  Iniciar(robot1,2,2)
+  Iniciar(robot2,5,5)
+  Iniciar(robot3,9,9)
+  
+fin

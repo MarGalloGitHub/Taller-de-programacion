@@ -1,0 +1,49 @@
+programa practica1
+procesos
+  proceso hacerAvenida(ES flores: numero; ES esquinas: numero)
+  comenzar
+    derecha
+    si(HayFlorEnLaEsquina)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:= flores + 1
+    sino 
+      esquinas:= esquinas + 1
+    repetir 99
+      mover
+      si(HayFlorEnLaEsquina)
+        mientras(HayFlorEnLaEsquina)
+          tomarFlor
+          flores:= flores + 1
+      sino
+        esquinas:= esquinas + 1
+    repetir flores
+      depositarFlor
+    repetir 3
+      derecha
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    flores: numero
+    esquinas: numero
+    calle: numero
+  comenzar
+    calle:= 1
+    repetir 3
+      flores:= 0
+      esquinas:= 0
+      hacerAvenida(flores,esquinas)
+      Informar(flores)
+      Informar(esquinas)
+      calle:= calle + 2
+      Pos(1,calle)
+  fin
+variables
+  robot1: tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  Iniciar(robot1,1,1)
+fin

@@ -1,0 +1,87 @@
+programa ejercicio1
+areas
+  areaIniF: AreaPC(6,10,7,10)
+  areaFtrabajo: AreaPC(1,1,5,10)
+  areaIniP: AreaPC(8,10,9,10)
+  areaPtrabajo: AreaPC(6,1,10,9)
+  areaTerminar: AreaC(10,10,10,10)
+robots
+  robot florero
+  variables
+    posIni1: numero
+    posIni2: numero
+    AveRandom: numero
+    CalleRandom: numero
+    cantFlores: numero
+  comenzar
+    cantFlores:= 0
+    posIni1:= PosAv
+    posIni2:= PosCa
+    repetir 5
+      Random(AveRandom,1,5)
+      Random(CalleRandom,1,10)
+      BloquearEsquina(AveRandom,CalleRandom)
+      Pos(AveRandom,CalleRandom)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      Pos(posIni1,posIni2)
+      LiberarEsquina(AveRandom,CalleRandom)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(posIni1,posIni2)
+    LiberarEsquina(10,10)
+  fin
+  robot papelero
+  variables 
+    posIni1: numero
+    posIni2: numero
+    aveRandom: numero
+    calleRandom: numero
+    cantPapeles: numero
+  comenzar
+    cantPapeles:= 0
+    posIni1:= PosAv
+    posIni2:= PosCa
+    repetir 3
+      Random(aveRandom,6,10)
+      Random(calleRandom,1,9)
+      BloquearEsquina(aveRandom,calleRandom)
+      Pos(aveRandom,calleRandom)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+      Pos(posIni1,posIni2)
+      LiberarEsquina(aveRandom,calleRandom)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    Pos(posIni1,posIni2)
+    LiberarEsquina(10,10)
+  fin
+variables
+  flor1: florero
+  flor2: florero
+  papel1: papelero
+  papel2: papelero
+comenzar
+  AsignarArea(flor1,areaIniF)
+  AsignarArea(flor2,areaIniF)
+  AsignarArea(flor1,areaFtrabajo)
+  AsignarArea(flor2,areaFtrabajo)
+  AsignarArea(papel1,areaIniP)
+  AsignarArea(papel2,areaIniP)
+  AsignarArea(papel1,areaPtrabajo)
+  AsignarArea(papel2,areaPtrabajo)
+  AsignarArea(flor1,areaTerminar)
+  AsignarArea(flor2,areaTerminar)
+  AsignarArea(papel1,areaTerminar)
+  AsignarArea(papel2,areaTerminar)
+  Iniciar(flor1,6,10)
+  Iniciar(flor2,7,10)
+  Iniciar(papel1,8,10)
+  Iniciar(papel2,9,10)
+fin

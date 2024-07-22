@@ -1,0 +1,110 @@
+programa RinfoEsLaMayorBasura
+procesos
+  proceso recogerFlores(ES cantFlores: numero ; E Avenida: numero ; E Calle: numero)
+  comenzar
+    Pos(Avenida,Calle)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso recogerPapeles(ES cantPapeles: numero ; E Avenida: numero ; E Calle: numero)
+  comenzar
+    Pos(Avenida,Calle)
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  proceso vaciarBolsa(ES cantFlores: numero ; ES cantPapeles: numero ; E Avenida: numero ; E Calle: numero)
+  comenzar
+    Pos(Avenida,Calle)
+    repetir cantFlores
+      depositarFlor
+    cantFlores:= 0
+    repetir cantPapeles
+      depositarPapel
+    cantPapeles:= 0
+  fin
+  proceso realizarTarea(E tarea: numero ; ES cantFlores: numero; ES cantPapeles: numero ; ES TERMINA: boolean)
+  variables
+    Avenida: numero
+    Calle: numero
+    Ini1: numero
+    Ini2: numero
+  comenzar
+    Ini1:= PosAv
+    Ini2:= PosCa
+    RecibirMensaje(Avenida,jefe)
+    RecibirMensaje(Calle,jefe)
+    si(tarea = 1)
+      recogerFlores(cantFlores,Avenida,Calle)
+    sino
+      si(tarea = 2)
+        recogerPapeles(cantPapeles,Avenida,Calle)
+      sino
+        si(tarea = 3)
+          vaciarBolsa(cantFlores,cantPapeles,Avenida,Calle)
+        sino
+          si(tarea = 4)
+            TERMINA:= V
+    Pos(Ini1,Ini2)
+  fin
+  proceso fase1(E trabajadorAleatorio: numero ; E tareaAleatoria: numero ; E AvenidaAleatoria: numero ; E CalleAleatoria: numero)
+  comenzar
+    si(trabajadorAleatorio = 1)
+      EnviarMensaje(tareaAleatoria,trabajador1)
+      EnviarMensaje(AvenidaAleatoria,trabajador1)
+      EnviarMensaje(CalleAleatoria,trabajador1)
+    sino
+      si(trabajadorAleatorio = 2)
+        EnviarMensaje(tareaAleatoria,trabajador2)
+        EnviarMensaje(AvenidaAleatoria,trabajador2)
+        EnviarMensaje(CalleAleatoria,trabajador2)
+  fin
+areas
+  areaJ: AreaP(1,1,1,1)
+  area1: AreaP(2,1,2,1)
+  area2: AreaP(3,1,3,1)
+  areaTRABAJO: AreaPC(2,2,100,100)
+robots
+  robot tipo1
+  variables
+    trabajadorAleatorio: numero
+    tareaAleatoria: numero
+    AvenidaAleatoria: numero
+    CalleAleatoria: numero
+  comenzar
+    repetir 10
+      Random(trabajadorAleatorio,1,2)
+      Random(tareaAleatoria,1,4)
+      Random(AvenidaAleatoria,2,100)
+      Random(CalleAleatoria,2,100)
+      fase1(trabajadorAleatorio,tareaAleatoria,AvenidaAleatoria,CalleAleatoria)
+  fin
+  robot tipo2
+  variables
+    tarea: numero
+    cantFlores: numero
+    cantPapeles: numero
+    TERMINA: boolean
+  comenzar
+    TERMINA:= F
+    cantFlores:= 0
+    cantPapeles:= 0
+    mientras(TERMINA = F)
+      RecibirMensaje(tarea,jefe)
+      realizarTarea(tarea,cantFlores,cantPapeles,TERMINA)
+  fin
+variables
+  jefe: tipo1
+  trabajador1: tipo2
+  trabajador2: tipo2
+comenzar
+  AsignarArea(jefe,areaJ)
+  AsignarArea(trabajador1,area1)
+  AsignarArea(trabajador2,area2)
+  AsignarArea(trabajador1,areaTRABAJO)
+  AsignarArea(trabajador2,areaTRABAJO)
+  Iniciar(jefe,1,1)
+  Iniciar(trabajador1,2,1)
+  Iniciar(trabajador2,3,1)
+fin

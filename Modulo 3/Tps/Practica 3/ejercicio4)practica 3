@@ -1,0 +1,71 @@
+programa ejercicio4
+areas
+  areaC: AreaP(1,1,1,1)
+  areaRobots: AreaPC(9,9,9,12)
+  area1: AreaPC(10,10,10,10)
+  area2: AreaPC(11,11,11,11)
+robots
+  robot tipo1
+  variables 
+    quien: numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    repetir 4
+      RecibirMensaje(quien,*)
+    Informar(quien)
+  fin
+  robot tipo2
+  variables
+    quien: numero
+    IniAv , IniCa: numero
+    hay: boolean
+  comenzar
+    hay:= V
+    IniAv:= PosAv
+    IniCa:= PosCa
+    RecibirMensaje(quien,coordinador)
+    mientras(hay = V)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+      sino
+        hay:= F
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(IniAv,IniCa)
+      LiberarEsquina(11,11)
+    EnviarMensaje(quien,coordinador)
+  fin
+variables
+  coordinador: tipo1
+  robot1: tipo2
+  robot2: tipo2
+  robot3: tipo2
+  robot4: tipo2
+comenzar
+  AsignarArea(coordinador,areaC)
+  AsignarArea(robot1,areaRobots)
+  AsignarArea(robot2,areaRobots)
+  AsignarArea(robot3,areaRobots)
+  AsignarArea(robot4,areaRobots)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot4,area1)
+  AsignarArea(robot1,area2)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area2)
+  AsignarArea(robot4,area2)
+  Iniciar(coordinador,1,1)
+  Iniciar(robot1,9,9)
+  Iniciar(robot2,9,10)
+  Iniciar(robot3,9,11)
+  Iniciar(robot4,9,12)
+fin
