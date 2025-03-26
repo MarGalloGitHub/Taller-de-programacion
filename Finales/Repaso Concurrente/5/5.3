@@ -1,0 +1,98 @@
+programa ejercicioTres
+procesos
+  proceso hacerEsquina(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso vaciarBolsa(ES flores:numero ; ES calles:numero ; E x:numero ; E y:numero)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir flores
+      depositarFlor
+      flores:=flores - 1
+    Pos(x,y)
+    LiberarEsquina(10,10)
+    si(flores = 0)
+      EnviarMensaje(F,cosechador)
+    si(calles = 5)
+      calles:=0
+  fin
+areas
+  deposito:AreaC(10,10,10,10)
+  area0:AreaP(1,5,1,5)
+  area1:AreaP(1,3,100,3)
+  area2:AreaP(1,4,100,4)
+robots
+  robot tipoCosechador
+  variables
+    flores:numero
+    cant:numero
+    valor:boolean
+    x:numero
+    y:numero
+  comenzar
+    x:=PosAv
+    y:=PosCa
+    flores:=0
+    cant:=0
+    mientras(cant < 2)
+      RecibirMensaje(valor,*)
+      si(valor = V)
+        cant:=cant + 1
+      sino
+        BloquearEsquina(10,10)
+        Pos(10,10)
+        hacerEsquina(flores)
+        Pos(x,y)
+        LiberarEsquina(10,10)
+    Informar(flores)
+  fin
+  robot tipoRecolector
+  variables
+    flores:numero
+    calles:numero
+    x:numero
+    y:numero
+  comenzar
+    flores:=0
+    calles:=0
+    derecha
+    mientras(PosAv < 100)
+      x:=PosAv
+      y:=PosCa
+      si(flores = 10) | (calles = 5)
+        vaciarBolsa(flores,calles,x,y)
+      sino
+        si(HayFlorEnLaEsquina)
+          tomarFlor
+          flores:=flores + 1 
+        mover
+        calles:= calles + 1
+    x:=PosAv
+    y:=PosCa
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=Flores + 1
+    si(flores = 10) | (calles = 5)
+      vaciarBolsa(flores,calles,x,y)
+      EnviarMensaje(F,cosechador)
+    EnviarMensaje(V,cosechador)
+  fin
+variables
+  cosechador:tipoCosechador
+  rec1:tipoRecolector
+  rec2:tipoRecolector
+comenzar
+  AsignarArea(cosechador,deposito)
+  AsignarArea(cosechador,area0)
+  AsignarArea(rec1,area1)
+  AsignarArea(rec1,deposito)
+  AsignarArea(rec2,area2)
+  AsignarArea(rec2,deposito)
+  Iniciar(cosechador,1,5)
+  Iniciar(rec1,1,3)
+  Iniciar(rec2,1,4)
+fin

@@ -1,0 +1,123 @@
+programa ejercicioDos
+procesos
+  proceso avisar(E quien:numero)
+  variables
+    num:numero
+  comenzar
+    si(quien = 1)
+      EnviarMensaje(quien,bot2)
+      EnviarMensaje(quien,bot3)
+      RecibirMensaje(num,bot2)
+      RecibirMensaje(num,bot3)
+    sino
+      si(quien = 2)
+        EnviarMensaje(quien,bot1)
+        EnviarMensaje(quien,bot3)
+        RecibirMensaje(num,bot1)
+        RecibirMensaje(num,bot3)
+      sino
+        EnviarMensaje(quien,bot1)
+        EnviarMensaje(quien,bot2)
+        RecibirMensaje(num,bot1)
+        RecibirMensaje(num,bot2)
+  fin
+  proceso juntar(ES flores:numero ; ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso hacerEsquina(ES flores:numero ; ES papeles:numero ; E calle:numero ; E avenida:numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir flores
+      depositarFlor
+    repetir papeles
+      depositarPapel
+    Pos(avenida,calle)
+    LiberarEsquina(50,50)
+    flores:=0
+    papeles:=0
+  fin
+  proceso etapa(ES flores:numero ; ES papeles:numero; E quien:numero ; E num:numero)
+  variables
+    calle:numero
+    avenida:numero
+  comenzar
+    repetir num
+      calle:=PosCa
+      avenida:=PosAv
+      juntar(flores,papeles)
+      mover
+    calle:=PosCa
+    avenida:=PosAv
+    hacerEsquina(flores,papeles,calle,avenida)
+    avisar(quien)
+  fin
+areas
+  deposito:AreaP(50,50,50,50)
+  area0:AreaP(1,4,1,4)
+  area1:AreaP(1,1,100,1)
+  area2:AreaP(1,2,100,2)
+  area3:AreaP(1,3,100,3)
+robots
+  robot tipoFiscalizador
+  variables
+    quien:numero
+    calle:numero
+    avenida:numero
+    flores:numero
+  comenzar
+    avenida:=PosAv
+    calle:=PosCa
+    flores:=0
+    EnviarMensaje(1,bot1)
+    EnviarMensaje(2,bot2)
+    EnviarMensaje(3,bot3)
+    repetir 3
+      RecibirMensaje(quien,*)
+      Pos(50,50)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores + 1
+    Pos(avenida,calle)
+    Informar(flores)
+  fin
+  robot tipoRecolector
+  variables
+    quien:numero
+    flores:numero
+    papeles:numero
+  comenzar
+    derecha
+    flores:=0
+    papeles:=0
+    RecibirMensaje(quien,fiscal)
+    repetir 9
+      etapa(flores,papeles,quien,10)
+    etapa(flores,papeles,quien,9)
+    EnviarMensaje(quien,fiscal)
+  fin
+variables
+  bot1:tipoRecolector
+  bot2:tipoRecolector
+  bot3:tipoRecolector
+  fiscal:tipoFiscalizador
+comenzar
+  AsignarArea(fiscal,deposito)
+  AsignarArea(fiscal,area0)
+  AsignarArea(bot1,area1)
+  AsignarArea(bot2,area2)
+  AsignarArea(bot3,area3)
+  AsignarArea(bot1,deposito)
+  AsignarArea(bot2,deposito)
+  AsignarArea(bot3,deposito)
+  Iniciar(fiscal,1,4)
+  Iniciar(bot1,1,1)
+  Iniciar(bot2,1,2)
+  Iniciar(bot3,1,3)
+fin

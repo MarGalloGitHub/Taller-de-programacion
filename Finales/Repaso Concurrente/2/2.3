@@ -1,0 +1,81 @@
+programa ejercicioTRES
+procesos
+  proceso hacerEsquinaFlores(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso hacerEsquinaPapeles(ES cantPapeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantPapeles: numero
+  comenzar
+    derecha
+    cantPapeles:= 0
+    repetir 9
+      hacerEsquinaPapeles(cantPapeles)
+      mover
+    hacerEsquinaPapeles(cantPapeles)
+    EnviarMensaje(cantPapeles,A2)  
+  fin
+  robot tipo2
+  variables
+    cantPapeles: numero
+  comenzar
+    RecibirMensaje(cantPapeles,A1)
+    derecha
+    repetir 9
+      hacerEsquinaPapeles(cantPapeles)
+      mover
+    hacerEsquinaPapeles(cantPapeles)
+    Informar(cantPapeles)
+  fin
+  robot tipo3
+  variables
+    cantFlores: numero
+  comenzar
+    derecha
+    cantFlores:= 0
+    repetir 9
+      hacerEsquinaFlores(cantFlores)
+      mover
+    hacerEsquinaFlores(cantFlores)
+    EnviarMensaje(cantFlores,B2)
+  fin
+  robot tipo4
+  variables
+    cantFlores: numero
+  comenzar
+    derecha
+    RecibirMensaje(cantFlores,B1)
+    repetir 9
+      hacerEsquinaFlores(cantFlores)
+      mover
+    hacerEsquinaFlores(cantFlores)
+    Informar(cantFlores)
+  fin
+variables
+  A1: tipo1
+  B1: tipo3
+  A2: tipo2
+  B2: tipo4
+comenzar
+  AsignarArea(A1,ciudad)
+  AsignarArea(B1,ciudad)
+  AsignarArea(A2,ciudad)
+  AsignarArea(B2,ciudad)
+  Iniciar(A1,1,1)
+  Iniciar(B1,1,5)
+  Iniciar(A2,11,1)
+  Iniciar(B2,11,5)
+fin
+

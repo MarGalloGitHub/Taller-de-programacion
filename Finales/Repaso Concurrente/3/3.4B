@@ -1,0 +1,94 @@
+programa ejercicioCuatro
+procesos
+  proceso trabajo (ES termine: boolean)
+  variables
+    calle:numero
+    avenida:numero
+  comenzar
+    calle:=PosCa
+    avenida:=PosAv
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      Pos(avenida,calle)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      depositarFlor
+      Pos(avenida,calle)
+      LiberarEsquina(11,11)
+    sino
+      Pos(avenida,calle)
+      LiberarEsquina(10,10)
+      termine:= V
+  fin
+areas
+  areat1: AreaPC(10,10,10,10)
+  areat2:AreaPC(11,11,11,11)
+  area0:AreaP(1,1,1,1)
+  area1:AreaP(9,9,9,9)
+  area2:AreaP(9,10,9,10)
+  area3:AreaP(9,11,9,11)
+  area4:AreaP(9,12,9,12)
+robots
+  robot tipoJefe
+  variables
+    quien:numero
+    ultimo:numero
+    avenida:numero
+    calle:numero
+  comenzar
+    avenida:=PosAv
+    calle:=PosCa
+    EnviarMensaje(1,bot1)
+    EnviarMensaje(2,bot2)
+    EnviarMensaje(3,bot3)
+    EnviarMensaje(4,bot4)
+    repetir 3
+      RecibirMensaje(quien,*)
+    RecibirMensaje(ultimo,*)
+    Informar(ultimo)
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(avenida,calle)
+  fin
+  robot tipo1
+  variables
+    quien:numero
+    termine: boolean
+  comenzar
+    termine:= F
+    RecibirMensaje(quien,jefe)
+    mientras(termine = F)
+      trabajo(termine)
+    EnviarMensaje(quien,jefe)
+  fin
+variables
+  jefe:tipoJefe
+  bot1:tipo1
+  bot2:tipo1
+  bot3:tipo1
+  bot4:tipo1
+comenzar
+  AsignarArea(jefe,area0)
+  AsignarArea(jefe,areat2)
+  AsignarArea(bot1,area1)
+  AsignarArea(bot1,areat1)
+  AsignarArea(bot1,areat2)
+  AsignarArea(bot2,area2)
+  AsignarArea(bot2,areat1)
+  AsignarArea(bot2,areat2)
+  AsignarArea(bot3,area3)
+  AsignarArea(bot3,areat1)
+  AsignarArea(bot3,areat2)
+  AsignarArea(bot4,area4)
+  AsignarArea(bot4,areat1)
+  AsignarArea(bot4,areat2)
+  Iniciar(jefe,1,1)
+  Iniciar(bot1,9,9)
+  Iniciar(bot2,9,10)
+  Iniciar(bot3,9,11)
+  Iniciar(bot4,9,12)
+fin

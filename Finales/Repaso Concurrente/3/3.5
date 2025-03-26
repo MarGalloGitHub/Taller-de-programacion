@@ -1,0 +1,101 @@
+programa ejercicioCinco
+procesos
+  proceso avanzar (ES termine:boolean)
+  variables
+    calle:numero
+    avenida:numero
+  comenzar
+    calle:=PosCa
+    avenida:=PosAv
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+    sino
+      termine:= V
+    Pos(avenida,calle)
+    LiberarEsquina(11,11)
+  fin
+  proceso nombrar
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+  fin
+  proceso sacarMaximo(E quien:numero ; ES max:numero ; ES quienMax:numero)
+  variables
+    num:numero
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(num,robot1)
+    sino
+      si(quien = 2)
+        RecibirMensaje(num,robot2)
+      sino
+        si(quien = 3)
+          RecibirMensaje(num,robot3)
+        sino
+          RecibirMensaje(num,robot4)
+    si(num > max)
+      max:=num
+      quienMax:=quien
+  fin
+areas
+  carrera: AreaPC(4,1,10,100)
+  esquina:AreaPC(11,11,11,11)
+  area0:AreaP(1,1,1,1)
+robots
+  robot tipoJefe
+  variables
+    distancia:numero
+    quien:numero
+    max:numero
+    quienMax:numero
+  comenzar
+    max:=0
+    nombrar
+    repetir 4
+      RecibirMensaje(quien,*)
+      sacarMaximo(quien,max,quienMax)
+    Informar(quienMax)
+  fin
+  robot tipo1
+  variables
+    quien:numero
+    termine:boolean
+    distancia:numero
+  comenzar
+    termine:=F
+    RecibirMensaje(quien,jefe)
+    mientras(termine = F) & (PosCa < 100)
+      avanzar(termine)
+      si(termine = F)
+        depositarPapel
+        Pos(PosAv,PosCa + 1)
+    EnviarMensaje(quien,jefe)
+    distancia:=PosCa
+    EnviarMensaje(distancia,jefe)
+  fin
+variables
+  jefe:tipoJefe
+  robot1:tipo1
+  robot2:tipo1
+  robot3:tipo1
+  robot4:tipo1
+comenzar
+  AsignarArea(jefe,area0)
+  AsignarArea(robot1,carrera)
+  AsignarArea(robot1,esquina)
+  AsignarArea(robot2,carrera)
+  AsignarArea(robot2,esquina)
+  AsignarArea(robot3,carrera)
+  AsignarArea(robot3,esquina)
+  AsignarArea(robot4,carrera)
+  AsignarArea(robot4,esquina)
+  Iniciar(jefe,1,1)
+  Iniciar(robot1,4,1)
+  Iniciar(robot2,6,1)
+  Iniciar(robot3,8,1)
+  Iniciar(robot4,10,1)
+fin

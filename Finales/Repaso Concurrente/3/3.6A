@@ -1,0 +1,128 @@
+programa ejercicioSeis
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  proceso hacerCuadrado(E distancia:numero ; ES flores:numero ; ES papeles:numero ; E quien:numero)
+  comenzar
+    repetir 4
+      repetir distancia
+        si(quien = 1)
+          juntarFlores(flores)
+        sino
+          si(quien = 2)
+            juntarFlores(flores)
+            juntarPapeles(papeles)
+          sino
+            juntarPapeles(papeles)    
+        mover
+      derecha
+  fin
+  proceso mandarPosicion(E primero:numero ; E segundo:numero ; E tercero:numero)
+  comenzar
+    si(primero = 1)
+      EnviarMensaje(20,bot1)
+    sino
+      si(primero = 2)
+        EnviarMensaje(20,bot2)
+      sino
+        EnviarMensaje(20,bot3)
+    si(segundo = 1)
+      EnviarMensaje(21,bot1)
+    sino
+      si(segundo = 2)
+        EnviarMensaje(21,bot2)
+      sino
+        EnviarMensaje(21,bot3)
+    si(tercero = 1)
+      EnviarMensaje(22,bot1)
+    sino
+      si(tercero = 2)
+        EnviarMensaje(22,bot2)
+      sino
+        EnviarMensaje(22,bot3)
+  fin
+  proceso recorrido(ES flores:numero ; ES papeles:numero ; E quien:numero)
+  comenzar
+    derecha
+    si(quien = 1)
+      mientras(flores > 0) & (PosAv < 100)
+        depositarFlor
+        flores:= flores - 1
+        mover
+    si(quien = 2)
+      mientras(flores <> 0) & (papeles <> 0) & (PosAv < 100)
+        depositarFlor
+        depositarPapel
+        flores:= flores - 1
+        papeles:= papeles - 1
+        mover
+    si(quien = 3)
+      mientras(papeles <> 0) & (PosAv < 100)
+        depositarPapel
+        papeles:= papeles - 1
+        mover
+  fin
+areas
+  ciudad:AreaC(1,1,100,100)
+robots
+  robot tipoJefe
+  variables
+    primero,segundo,tercero:numero
+  comenzar
+    EnviarMensaje(1,bot1)
+    EnviarMensaje(2,bot2)
+    EnviarMensaje(3,bot3)
+    RecibirMensaje(primero,*)
+    RecibirMensaje(segundo,*)
+    RecibirMensaje(tercero,*)
+    mandarPosicion(primero,segundo,tercero)
+  fin
+  robot tipo1
+  variables
+    flores:numero
+    papeles:numero
+    quien:numero
+    distancia:numero
+    calle:numero
+  comenzar
+    flores:=0
+    papeles:=0
+    RecibirMensaje(quien,jefe)
+    si(quien = 1)
+      distancia:=6
+    sino
+      si(quien = 2)
+        distancia:= 10
+      sino
+        distancia:= 7
+    hacerCuadrado(distancia,flores,papeles,quien)
+    EnviarMensaje(quien,jefe)
+    RecibirMensaje(calle,jefe)
+    Pos(1,calle)
+    recorrido(flores,papeles,quien)
+  fin
+variables
+  jefe:tipoJefe
+  bot1:tipo1
+  bot2:tipo1
+  bot3:tipo1
+comenzar
+  AsignarArea(jefe,ciudad)
+  AsignarArea(bot1,ciudad)
+  AsignarArea(bot2,ciudad)
+  AsignarArea(bot3,ciudad)
+  Iniciar(jefe,1,1)
+  Iniciar(bot1,2,2)
+  Iniciar(bot2,5,5)
+  Iniciar(bot3,9,9)
+fin

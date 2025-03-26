@@ -1,0 +1,72 @@
+programa ejercicioTres
+procesos
+  proceso juntar(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  proceso esperar(E quien:numero)
+  comenzar
+    si(quien = 1)
+      EnviarMensaje(quien,bot2)
+      EnviarMensaje(quien,bot3)
+      RecibirMensaje(quien,bot2)
+      RecibirMensaje(quien,bot3)
+    sino
+      si(quien = 2)
+        EnviarMensaje(quien,bot1)
+        EnviarMensaje(quien,bot3)
+        RecibirMensaje(quien,bot1)
+        RecibirMensaje(quien,bot3)
+      sino
+        EnviarMensaje(quien,bot1)
+        EnviarMensaje(quien,bot2)
+        RecibirMensaje(quien,bot1)
+        RecibirMensaje(quien,bot2)
+  fin
+areas
+  area0:AreaP(4,1,4,1)
+  area1:AreaP(1,1,1,100)
+  area2:AreaP(2,1,2,100)
+  area3:AreaP(3,1,3,100)
+robots
+  robot tipoCoordinador
+  comenzar
+    EnviarMensaje(1,bot1)
+    EnviarMensaje(2,bot2)
+    EnviarMensaje(3,bot3)
+  fin
+  robot tipo1
+  variables
+    papeles:numero
+    quien:numero
+    num:numero
+  comenzar
+    papeles:=0
+    RecibirMensaje(quien,coordinador)
+    mientras(PosCa < 100)
+      Random(num,1,5)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:=papeles + 1
+        si(papeles = num)
+          esperar(quien)
+          papeles:=0
+      mover
+  fin
+variables
+  coordinador:tipoCoordinador
+  bot1:tipo1
+  bot2:tipo1
+  bot3:tipo1
+comenzar
+  AsignarArea(coordinador,area0)
+  AsignarArea(bot1,area1)
+  AsignarArea(bot2,area2)
+  AsignarArea(bot3,area3)
+  Iniciar(coordinador,4,1)
+  Iniciar(bot1,1,1)
+  Iniciar(bot2,2,1)
+  Iniciar(bot3,3,1)
+fin

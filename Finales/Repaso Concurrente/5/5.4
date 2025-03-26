@@ -1,0 +1,131 @@
+programa ejercicioCuatro
+procesos
+  proceso vaciarBolsa(E calle:numero ; E avenida:numero ; ES flores:numero)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir flores
+      depositarFlor
+    Pos(avenida,calle)
+    LiberarEsquina(10,10)
+  fin
+  proceso juntar(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso trabajar(E calle:numero ; E avenida:numero ; ES flores:numero)
+  variables
+    x:numero
+    y:numero
+  comenzar
+    RecibirMensaje(x,fiscalizador)
+    RecibirMensaje(y,fiscalizador)
+    BloquearEsquina(x,y)
+    Pos(x,y)
+    juntar(flores)
+    Pos(avenida,calle)
+    LiberarEsquina(x,y)
+  fin
+  proceso avisarTermine
+  variables
+    algo:numero
+  comenzar
+    EnviarMensaje(V,florero1)
+    EnviarMensaje(V,florero2)
+    EnviarMensaje(V,florero3)
+    repetir 3
+      RecibirMensaje(algo,*)
+  fin
+  proceso mandar
+  variables
+    x:numero
+    y:numero
+    quien:numero
+  comenzar
+    Random(quien,1,3)
+    Random(x,40,60)
+    Random(y,40,60)
+    si(quien = 1)
+      EnviarMensaje(F,florero1)
+      EnviarMensaje(x,florero1)
+      EnviarMensaje(y,florero1)
+    sino
+      si(quien = 2)
+        EnviarMensaje(F,florero2)
+        EnviarMensaje(x,florero2)
+        EnviarMensaje(y,florero2)
+      sino
+        EnviarMensaje(F,florero3)
+        EnviarMensaje(x,florero3)
+        EnviarMensaje(y,florero3)  
+  fin
+areas
+  deposito:AreaC(10,10,10,10)
+  area0:AreaP(4,1,4,1)
+  area1:AreaP(1,1,1,1)
+  area2:AreaP(2,1,2,1)
+  area3:AreaP(3,1,3,1)
+  trabajo:AreaPC(40,40,60,60)
+robots
+  robot tipoFiscalizador
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    repetir 8
+      mandar
+    avisarTermine
+    Pos(10,10)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+    Informar(flores)
+    repetir flores
+      depositarFlor
+  fin
+  robot tipoFlorero
+  variables
+    termine:boolean
+    valor:boolean
+    flores:numero
+    calle:numero
+    avenida:numero
+  comenzar
+    calle:=PosCa
+    avenida:=PosAv
+    flores:=0
+    termine:= F
+    mientras(termine = F)
+      RecibirMensaje(valor,fiscalizador)
+      si(valor = V)
+        termine:= V
+      sino
+        trabajar(calle,avenida,flores)
+    Informar(flores)
+    vaciarBolsa(calle,avenida,flores)
+    EnviarMensaje(10,fiscalizador)
+  fin
+variables
+  florero1:tipoFlorero
+  florero2:tipoFlorero
+  florero3:tipoFlorero
+  fiscalizador:tipoFiscalizador
+comenzar
+  AsignarArea(fiscalizador,area0)
+  AsignarArea(fiscalizador,deposito)
+  AsignarArea(florero1,area1)
+  AsignarArea(florero1,trabajo)
+  AsignarArea(florero1,deposito)
+  AsignarArea(florero2,area2)
+  AsignarArea(florero2,trabajo)
+  AsignarArea(florero2,deposito)
+  AsignarArea(florero3,area3)
+  AsignarArea(florero3,trabajo)
+  AsignarArea(florero3,deposito)
+  Iniciar(fiscalizador,4,1)
+  Iniciar(florero1,1,1)
+  Iniciar(florero2,2,1)
+  Iniciar(florero3,3,1)
+fin

@@ -1,0 +1,133 @@
+programa ejercicioCuatro
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)  
+      tomarFlor
+      flores:=flores + 1
+  fin 
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  proceso vaciarBolsa(ES flores:numero ; ES papeles:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+    flores:=0
+    repetir papeles
+      depositarPapel
+    papeles:=0
+  fin
+  proceso mandarTarea(E quien:numero ; E tarea:numero)
+  variables
+    x:numero
+    y:numero
+  comenzar
+    Random(x,2,100)
+    Random(y,2,100)
+    si(quien = 1)
+      EnviarMensaje(tarea,t1)
+      EnviarMensaje(x,t1)
+      EnviarMensaje(y,t1)
+    sino
+      EnviarMensaje(tarea,t2)
+      EnviarMensaje(x,t2)
+      EnviarMensaje(y,t2)
+  fin
+  proceso esperar(E quien:numero)
+  variables
+    x:numero
+  comenzar
+    si(quien = 1)
+      RecibirMensaje(x,t1)
+    sino
+      RecibirMensaje(x,t2)
+  fin
+  proceso realizarTarea(E tarea:numero ; E x:numero ; E y:numero ; E ave:numero ; E calle:numero ; ES flores:numero ; ES papeles:numero)
+  comenzar
+    BloquearEsquina(x,y)
+    Pos(x,y)
+    si(tarea = 1)
+      juntarFlores(flores)
+    sino
+      si(tarea = 2)
+        juntarPapeles(papeles)
+      sino
+        si(tarea = 3)
+          vaciarBolsa(flores,papeles)
+        sino
+          Informar(00)
+    Pos(ave,calle)
+    LiberarEsquina(x,y)
+  fin
+areas
+  trabajo:AreaPC(2,2,100,100)
+  area0:AreaP(1,1,1,1)
+  area1:AreaP(2,1,2,1)
+  area2:AreaP(3,1,3,1)
+robots  
+  robot tipoJefe
+  variables
+    tarea:numero
+    quien:numero
+    num:numero
+    termine:numero
+  comenzar
+    termine:=0
+    num:=1
+    EnviarMensaje(1,t1) 
+    EnviarMensaje(2,t2) 
+    mientras(num < 10) & (termine < 2)
+      num:=num + 1
+      Random(tarea,1,4) 
+      Random(quien,1,2)
+      mandarTarea(quien,tarea)
+      si(tarea = 4)
+        termine:=termine + 1
+      esperar(quien)
+  fin
+  robot tipoTrabajador
+  variables
+    termine:boolean
+    tarea:numero
+    quien:numero
+    x:numero
+    y:numero
+    ave:numero
+    calle:numero
+    flores:numero
+    papeles:numero
+  comenzar
+    flores:=0
+    papeles:=0
+    ave:=PosAv
+    calle:=PosCa
+    RecibirMensaje(quien,jefe)
+    termine:=F
+    mientras(termine = F)
+      RecibirMensaje(tarea,jefe)
+      RecibirMensaje(x,jefe)
+      RecibirMensaje(y,jefe)
+      Informar(quien)
+      realizarTarea(tarea,x,y,ave,calle,flores,papeles)
+      EnviarMensaje(quien,jefe)
+      si(tarea = 4)
+        termine:= V 
+  fin
+variables
+  jefe:tipoJefe
+  t1:tipoTrabajador
+  t2:tipoTrabajador
+comenzar
+  AsignarArea(jefe,area0)
+  AsignarArea(t1,area1)
+  AsignarArea(t1,trabajo)
+  AsignarArea(t2,area2)
+  AsignarArea(t2,trabajo)
+  Iniciar(jefe,1,1)
+  Iniciar(t1,2,1)
+  Iniciar(t2,3,1)
+fin

@@ -1,0 +1,127 @@
+programa ejercicioDos
+procesos
+  proceso hacerUltimoEscalon(ES material:numero ; E quien: numero)
+  comenzar
+    juntar(material,quien)
+    mover
+    si(quien = 1)
+      derecha
+    sino
+      izquierda
+    BloquearEsquina(16,16)
+    mover
+    juntar(material,quien)
+    EnviarMensaje(quien,jefe)
+    si(quien = 1)
+      repetir 2
+        izquierda
+    sino
+      repetir 2
+        derecha
+    mover
+    EnviarMensaje(quien,jefe)
+    LiberarEsquina(16,16)
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntar(ES material:numero ; E cual: numero)
+  comenzar
+    si(cual = 1)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        material:= material + 1
+    sino
+      mientras(HayPapelEnLaEsquina)
+        TomarPapel
+        material:= material + 1
+  fin
+  proceso escalon(E distancia: numero ; ES material: numero ; E quien: numero)
+  comenzar
+    repetir distancia
+      juntar(material,quien)
+      mover
+    si(quien = 1)
+      derecha
+    sino
+      izquierda
+    repetir distancia
+      juntar(material,quien)
+      mover
+    si(quien = 1)
+      izquierda
+    sino
+      derecha
+  fin
+areas
+  ciudad:AreaC(1,1,100,100)
+robots
+  robot tipoJefe
+  variables
+    primero:numero
+    segundo:numero
+    termine:boolean
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    RecibirMensaje(primero,*)
+    RecibirMensaje(segundo,*)
+    repetir 2
+      RecibirMensaje(termine,*)
+    Informar(primero)
+  fin
+  robot tipo1
+  variables
+    distancia:numero
+    flores:numero
+    quien:numero
+  comenzar
+    distancia:=5
+    flores:=0
+    RecibirMensaje(quien,jefe)
+    repetir 4 
+      escalon(distancia,flores,quien)
+      distancia:= distancia - 1
+    hacerUltimoEscalon(flores,quien)
+    distancia:= distancia + 1
+    repetir 4
+      escalon(distancia,flores,quien)
+      distancia:= distancia + 1
+    EnviarMensaje(V,jefe)
+  fin
+  robot tipo2
+  variables
+    distancia:numero
+    papeles:numero
+    quien:numero
+  comenzar
+    distancia:= 5
+    papeles:=0
+    RecibirMensaje(quien,jefe)
+    repetir 4
+      escalon(distancia,papeles,quien)
+      distancia:= distancia - 1
+    hacerUltimoEscalon(papeles,quien)
+    distancia:= distancia + 1
+    repetir 4
+      escalon(distancia,papeles,quien)
+      distancia:= distancia + 1
+    EnviarMensaje(V,jefe)
+  fin
+variables
+  jefe:tipoJefe
+  robot1:tipo1
+  robot2:tipo2
+comenzar
+  AsignarArea(jefe,ciudad)
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  Iniciar(jefe,15,1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,31,1)
+fin
+
+
+

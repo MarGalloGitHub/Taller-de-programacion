@@ -1,0 +1,60 @@
+programa ejercicioDos
+procesos
+  proceso juntar(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso recorrido
+  variables
+    papeles: numero
+  comenzar
+    papeles:= 0
+    juntar(papeles)
+    repetir 9
+      mover
+      juntar(papeles)
+    repetir papeles
+      depositarPapel
+    Informar(papeles)
+  fin
+areas
+  area1: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  comenzar
+    recorrido
+  fin
+  robot tipo2
+  comenzar
+    derecha
+    recorrido
+  fin
+  robot tipo3
+  comenzar
+    repetir 2
+      derecha
+    recorrido
+  fin
+  robot tipo4
+  comenzar
+    repetir 3
+      derecha
+    recorrido
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo3
+  robot4: tipo4
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot4,area1)
+  Iniciar(robot1,10,10)
+  Iniciar(robot2,10,20)
+  Iniciar(robot3,20,20)
+  Iniciar(robot4,20,10)
+fin

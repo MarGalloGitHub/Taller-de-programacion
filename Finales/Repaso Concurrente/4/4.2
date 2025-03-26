@@ -1,0 +1,98 @@
+programa ejercicioDos
+procesos
+  proceso juntar(E num:numero ; ES pude:boolean)
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    repetir num
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:=papeles + 1
+    si(papeles = num)
+      pude:= V
+  fin
+  proceso bloque(ES papeles:numero)
+  variables
+    av:numero
+    cal:numero
+  comenzar
+    av:=PosAv
+    cal:=PosCa
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+      si(papeles = 5)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir papeles
+          depositarPapel
+        Pos(av,cal)
+        LiberarEsquina(50,50)
+        papeles:=0
+  fin
+  proceso recorrido
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    repetir 99
+      mientras(HayPapelEnLaEsquina)
+        bloque(papeles)
+      mover
+    bloque(papeles)
+  fin
+areas
+  areaP1:AreaP(5,1,5,100)
+  areaP2:AreaP(10,1,10,100)
+  deposito:AreaPC(50,50,50,50)
+  area1:AreaP(11,1,11,1)
+  area2:AreaP(12,1,12,1)
+robots
+  robot tipoProductor
+  comenzar
+    recorrido
+  fin
+  robot tipoConsumidor
+  variables
+    intentos:numero
+    calle:numero
+    avenida:numero
+    num:numero
+    pude:boolean
+  comenzar
+    intentos:=0
+    calle:=PosCa
+    avenida:=PosAv
+    mientras(intentos < 8)
+      Random(num,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      juntar(num,pude)
+      Pos(avenida,calle)
+      LiberarEsquina(50,50)
+      si(pude = V)
+        repetir num
+          depositarPapel
+      sino
+        intentos:= intentos + 1
+  fin
+variables
+  prod1:tipoProductor
+  prod2:tipoProductor
+  cons1:tipoConsumidor
+  cons2:tipoConsumidor
+comenzar
+  AsignarArea(prod1,areaP1)
+  AsignarArea(prod1,deposito)
+  AsignarArea(prod2,areaP2)
+  AsignarArea(prod2,deposito)
+  AsignarArea(cons1,area1)
+  AsignarArea(cons1,deposito)
+  AsignarArea(cons2,area2)
+  AsignarArea(cons2,deposito)
+  Iniciar(prod1,5,1)
+  Iniciar(prod2,10,1)
+  Iniciar(cons1,11,1)
+  Iniciar(cons2,12,1)
+fin

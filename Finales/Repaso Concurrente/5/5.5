@@ -1,0 +1,86 @@
+programa servidor
+procesos 
+  proceso recogerPapeles(E cantCOMP: numero ; E Ini1: numero; E Ini2: numero)
+  comenzar
+    repetir cantCOMP
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      tomarPapel
+      Pos(Ini1,Ini2)
+      LiberarEsquina(100,1)
+      depositarPapel
+  fin
+  proceso habilitar(E quien: numero)
+  variables
+    cantRandom: numero
+  comenzar
+    Random(cantRandom,1,5)
+    BloquearEsquina(100,1)
+    Pos(100,1)
+    repetir cantRandom
+      depositarPapel
+    Pos(13,1)
+    LiberarEsquina(100,1)
+    si(quien = 1)
+      EnviarMensaje(cantRandom,cliente1)
+    sino
+      si(quien = 2)
+        EnviarMensaje(cantRandom,cliente2)
+      sino
+        si(quien = 3)
+          EnviarMensaje(cantRandom,cliente3)
+  fin
+areas
+  deposito: AreaC(100,1,100,1)
+  area1: AreaP(10,1,10,1)
+  area2: AreaP(11,1,11,1)
+  area3: AreaP(12,1,12,1)
+  areaS: AreaP(13,1,13,1)
+robots
+  robot tipo1
+  variables
+    quien: numero
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+    EnviarMensaje(1,cliente1)
+    EnviarMensaje(2,cliente2)
+    EnviarMensaje(3,cliente3)
+    repetir 12
+      RecibirMensaje(quien,*)
+      habilitar(quien) 
+  fin
+  robot tipo2
+  variables
+    cantCOMP: numero
+    quien: numero
+    Ini1: numero
+    Ini2: numero
+  comenzar
+    Ini1:= PosAv
+    Ini2:= PosCa
+    RecibirMensaje(quien,servidor)
+    repetir 4
+      EnviarMensaje(quien,servidor)
+      RecibirMensaje(cantCOMP,servidor)
+      recogerPapeles(cantCOMP,Ini1,Ini2)
+  fin
+variables
+  servidor: tipo1
+  cliente1: tipo2
+  cliente2: tipo2
+  cliente3: tipo2
+comenzar
+  AsignarArea(servidor,areaS)
+  AsignarArea(servidor,deposito)
+  AsignarArea(cliente1,area1)
+  AsignarArea(cliente1,deposito)
+  AsignarArea(cliente2,area2)
+  AsignarArea(cliente2,deposito)
+  AsignarArea(cliente3,area3)
+  AsignarArea(cliente3,deposito)
+  Iniciar(servidor,13,1)
+  Iniciar(cliente1,10,1)
+  Iniciar(cliente2,11,1)
+  Iniciar(cliente3,12,1)
+fin

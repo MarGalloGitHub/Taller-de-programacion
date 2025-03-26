@@ -1,0 +1,124 @@
+programa ejercicioUno
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+areas
+  tramo11: AreaP(2,1,2,100)
+  tramo12: AreaP(3,1,3,100)
+  tramo21: AreaP(1,98,100,98)
+  tramo22: AreaP(1,99,199,99)
+  area0: AreaP(1,1,1,1)
+robots
+  robot tipoR
+  variables
+    flores:numero
+    quien:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(quien,fiscal)
+    repetir 96
+      juntarFlores(flores)
+      mover
+    BloquearEsquina(PosAv,98)
+    mover
+    juntarFlores(flores)
+    BloquearEsquina(PosAv,99)
+    mover
+    LiberarEsquina(PosAv,98)
+    juntarFlores(flores)
+    mover
+    LiberarEsquina(PosAv,99)
+    juntarFlores(flores)
+    EnviarMensaje(quien,fiscal)
+    EnviarMensaje(flores,fiscal)
+  fin
+  robot tipoA
+  variables
+    papeles:numero
+    quien:numero
+  comenzar
+    papeles:=0
+    RecibirMensaje(quien,fiscal)
+    derecha
+    juntarPapeles(papeles)
+    BloquearEsquina(2,PosCa)
+    mover
+    juntarPapeles(papeles)
+    BloquearEsquina(3,PosCa)
+    mover
+    LiberarEsquina(2,PosCa)
+    juntarPapeles(papeles)
+    mover
+    LiberarEsquina(3,PosCa)
+    repetir 96
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    EnviarMensaje(quien,fiscal)
+    EnviarMensaje(papeles,fiscal)
+  fin
+  robot tipoFiscalizador
+  variables
+    quien:numero
+    material:numero
+    suma1:numero
+    suma2:numero
+  comenzar
+    suma1:=0
+    suma2:=0
+    EnviarMensaje(1,rojo1)
+    EnviarMensaje(2,rojo2)
+    EnviarMensaje(3,azul1)
+    EnviarMensaje(4,azul2)
+    repetir 4
+      RecibirMensaje(quien,*)
+      si(quien = 1 )
+        RecibirMensaje(material,rojo1)
+        suma1:=suma1 + material
+      sino
+        si(quien = 2)
+          RecibirMensaje(material,rojo2)
+          suma1:=suma1 + material
+        sino
+          si(quien = 3)
+            RecibirMensaje(material,azul1)
+            suma2:= suma2 + material
+          sino
+            RecibirMensaje(material,azul2)
+            suma2:= suma2 + material
+    si(suma1 > suma2)
+      Informar(1)
+    sino
+      si(suma2 > suma1)
+        Informar(2)
+      sino
+        Informar(00) 
+  fin
+variables
+  rojo1: tipoR
+  rojo2: tipoA
+  azul1: tipoR
+  azul2: tipoA
+  fiscal: tipoFiscalizador
+comenzar
+  AsignarArea(rojo1,tramo11)
+  AsignarArea(azul1,tramo12)
+  AsignarArea(rojo2,tramo21)
+  AsignarArea(azul2,tramo22)
+  AsignarArea(fiscal,area0)
+  Iniciar(rojo1,2,1)
+  Iniciar(azul1,3,1)
+  Iniciar(rojo2,1,98)
+  Iniciar(azul2,1,99)
+  Iniciar(fiscal,1,1)
+fin

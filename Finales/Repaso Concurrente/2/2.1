@@ -1,0 +1,102 @@
+programa ejercicioUno
+procesos
+  proceso juntar(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso recorrido(ES flores:numero)
+  comenzar
+    repetir 9
+      juntar(flores)
+      mover
+    juntar(flores)
+  fin
+  proceso sacarMaximo(E quienSoy:numero ; ES quienMax:numero ; ES max:numero)
+  variables
+    flores:numero
+  comenzar
+    si(quienSoy = 1)
+      RecibirMensaje(flores,robot1)
+    sino
+      si(quienSoy = 2)
+        RecibirMensaje(flores,robot2)
+      sino
+        si(quienSoy = 3)
+          RecibirMensaje(flores,robot3)
+        sino
+          si(quienSoy=4)
+            RecibirMensaje(flores,robot4)
+          sino
+            si(quienSoy=5)
+              RecibirMensaje(flores,robot5)
+            sino
+              RecibirMensaje(flores,robot6)
+    Informar(flores)
+    Informar(max)
+    si(flores > max)
+      max:= flores
+      quienMax:= quienSoy
+  fin
+areas
+  area1: AreaC(1,1,100,100)
+robots
+  robot fiscalizador
+  variables
+    flores:numero
+    max: numero
+    quienSoy:numero
+    quienMax:numero
+  comenzar
+    max:= 0
+    quienMax:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(5,robot5)
+    EnviarMensaje(6,robot6)
+    repetir 6
+      RecibirMensaje(quienSoy , *)
+      sacarMaximo(quienSoy,quienMax,max)
+    Informar('Ganador',quienMax)
+    Informar('cantMax',max)
+  fin
+  robot tipo1
+  variables
+    flores: numero
+    quienSoy: numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    flores:= 0
+    recorrido(flores)
+    EnviarMensaje(quienSoy,fiscalizador)
+    EnviarMensaje(flores,fiscalizador)
+  fin
+variables
+  robot1:tipo1
+  robot2:tipo1
+  robot3:tipo1
+  robot4:tipo1
+  robot5:tipo1
+  robot6:tipo1
+  fiscalizador:fiscalizador
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot4,area1)
+  AsignarArea(robot5,area1)
+  AsignarArea(robot6,area1)
+  AsignarArea(fiscalizador,area1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+  Iniciar(fiscalizador,2,1)
+fin
+
+

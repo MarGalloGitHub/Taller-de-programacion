@@ -1,0 +1,121 @@
+{ Usuario 2025-02-24T16:40:37.895858700 }
+programa final
+procesos
+  proceso buscarEnArea(E quien:numero ; ES cant:numero)
+  variables
+    x:numero
+    y:numero
+  comenzar
+    si(quien = 1)
+      Random(x,21,25)
+      Random(y,11,15)
+      Pos(x,y)
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+        cant:= cant + 1
+        Informar(quien)
+    sino
+      Random(x,11,15)
+      Random(y,11,15)
+      Pos(x,y)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        cant:= cant + 1
+        Informar(quien)
+  fin
+  proceso hacerCuadrado(E quien:numero)
+  variables
+    x:numero
+    y:numero
+  comenzar
+    si(quien = 1)
+      Random(x,11,15)
+      Random(y,11,15)
+      Pos(x,y)
+      LiberarEsquina(18,13)
+      depositarFlor
+    sino
+      Random(x,21,25)
+      Random(y,11,15)
+      Pos(x,y)
+      LiberarEsquina(18,13)
+      depositarPapel
+  fin
+areas
+  fuente: AreaPC(18,13,18,13)
+  cuadradoA: AreaPC(11,11,15,15)
+  cuadradoB: AreaPC(21,11,25,15)
+  area0: AreaP(1,1,1,1)
+  area1:AreaP(2,2,2,2)
+  area2:AreaP(3,3,3,3)
+robots
+  robot tipoFiscalizador
+  variables
+    quien:numero
+    primero:numero
+    segundo:numero
+  comenzar
+    EnviarMensaje(1,florero)
+    EnviarMensaje(2,papelero)
+    repetir 2
+      RecibirMensaje(quien,*)
+    EnviarMensaje(V,florero)
+    EnviarMensaje(V,papelero)
+    RecibirMensaje(primero,*)
+    RecibirMensaje(segundo,*)
+    Informar(primero)
+  fin
+  robot tipoJuntador
+  variables
+    cant:numero
+    quien:numero
+    calle:numero
+    ave:numero
+    listo:numero
+  comenzar
+    RecibirMensaje(quien,fiscalizador)
+    ave:=PosAv
+    calle:=PosCa
+    repetir 5
+      BloquearEsquina(18,13)
+      Pos(18,13)
+      si(quien = 1)
+        tomarFlor
+      sino
+        tomarPapel
+      hacerCuadrado(quien)
+      Pos(ave,calle)
+    EnviarMensaje(quien,fiscalizador)
+    RecibirMensaje(listo,fiscalizador)
+    cant:=0
+    mientras(cant = 0)
+      buscarEnArea(quien,cant)
+      Pos(ave,calle)
+    BloquearEsquina(18,13)
+    Pos(18,13)
+    si(quien = 1)
+      depositarPapel
+    sino
+      depositarFlor
+    Pos(ave,calle)
+    LiberarEsquina(18,13)
+    EnviarMensaje(quien,fiscalizador)
+  fin
+variables
+  papelero: tipoJuntador
+  florero: tipoJuntador
+  fiscalizador: tipoFiscalizador
+comenzar
+  AsignarArea(fiscalizador,area0)
+  AsignarArea(florero,area1)
+  AsignarArea(papelero,area2)
+  AsignarArea(florero,fuente)
+  AsignarArea(papelero,fuente)
+  AsignarArea(florero,cuadradoA)
+  AsignarArea(florero,cuadradoB)
+  AsignarArea(papelero,cuadradoA)
+  AsignarArea(papelero,cuadradoB)
+  Iniciar(fiscalizador,1,1)
+  Iniciar(florero,2,2)
+  Iniciar(papelero,3,3)
+fin
