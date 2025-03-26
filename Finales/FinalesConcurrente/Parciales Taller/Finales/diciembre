@@ -1,0 +1,110 @@
+programa finalDiciembre
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+areas
+  deposito: AreaPC(20,20,20,20)
+  verticalUno: AreaP(19,21,19,28)
+  verticalDos: AreaP(21,21,21,28)
+  esquinaUno: AreaPC(19,20,19,20)
+  esquinaDos: AreaPC(21,20,21,20)
+  horizontalUno: AreaP(10,20,18,20)
+  horizontalDos: AreaP(22,20,30,20)
+  area0: AreaP(1,1,1,1)
+robots
+  robot tipoNombrador
+  comenzar
+    EnviarMensaje(1,robot11)    
+    EnviarMensaje(2,robot12)
+    EnviarMensaje(3,robot21)
+    EnviarMensaje(4,robot22)
+  fin
+  robot tipoHorizontal
+  variables
+    quien:numero
+    flores:numero
+    listo:boolean
+    ave:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(quien,nombrador)
+    si(quien = 1)
+      derecha
+    sino
+      repetir 3
+        derecha
+    repetir 8
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    si(quien = 1)
+      RecibirMensaje(listo,robot12)
+    sino
+      RecibirMensaje(listo,robot22)
+    mover
+    juntarFlores(flores)
+    ave:=PosAv
+    repetir flores
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(ave,20)
+      LiberarEsquina(20,20)
+  fin
+  robot tipoVertical
+  variables
+    quien:numero
+    ave:numero
+    calle:numero
+  comenzar
+    ave:=PosAv
+    RecibirMensaje(quien,nombrador)
+    repetir 2
+      derecha
+    repetir 7
+      calle:=PosCa
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        Pos(ave,20)
+        depositarFlor
+        Pos(ave,calle)
+      mover
+    calle:=PosCa
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      Pos(ave,20)
+      depositarFlor
+      Pos(ave,calle)
+    si(quien = 2)
+      EnviarMensaje(V,robot11)
+    sino
+      EnviarMensaje(V,robot21)
+  fin
+variables
+  robot11: tipoHorizontal
+  robot21: tipoHorizontal
+  robot12: tipoVertical
+  robot22: tipoVertical
+  nombrador: tipoNombrador
+comenzar
+  AsignarArea(nombrador,area0)
+  AsignarArea(robot11,deposito)
+  AsignarArea(robot11,esquinaUno)
+  AsignarArea(robot11,horizontalUno)
+  AsignarArea(robot21,deposito)
+  AsignarArea(robot21,esquinaDos)
+  AsignarArea(robot21,horizontalDos)
+  AsignarArea(robot12,verticalUno)
+  AsignarArea(robot12,esquinaUno)
+  AsignarArea(robot22,verticalDos)
+  AsignarArea(robot22,esquinaDos)
+  Iniciar(nombrador,1,1)
+  Iniciar(robot11,10,20)
+  Iniciar(robot21,30,20)
+  Iniciar(robot12,19,28)
+  Iniciar(robot22,21,28)
+fin

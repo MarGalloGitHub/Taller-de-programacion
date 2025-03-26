@@ -1,0 +1,98 @@
+programa parcialTURNOc
+procesos
+  proceso llevarAlDeposito(ES cantFlores: numero ; E Ini1: numero ; E Ini2: numero)
+  comenzar
+    repetir cantFlores
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlor
+      cantFlores:= cantFlores - 1
+      Pos(Ini1,Ini2)
+      LiberarEsquina(50,50)
+  fin
+  proceso hacerEsquina(ES cantFlores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso hacerCuadrado(E tamanio: numero ; ES cantFlores: numero)
+  comenzar
+    repetir 4
+      repetir tamanio
+        hacerEsquina(cantFlores)
+        mover
+      derecha
+  fin
+  proceso esperar(E quien: numero)
+  variables
+    listo: boolean
+  comenzar
+    si(quien = 1)
+      EnviarMensaje(V,rob2)
+      EnviarMensaje(V,rob3)
+    sino
+      si(quien = 2)
+        EnviarMensaje(V,rob1)
+        EnviarMensaje(V,rob3)
+      sino
+        si(quien = 3)
+          EnviarMensaje(V,rob1)
+          EnviarMensaje(V,rob2)
+    repetir 2
+      RecibirMensaje(listo,*)
+  fin
+areas
+  area1:  AreaP(1,1,6,31)
+  area2: AreaP(8,1,13,31)
+  area3:  AreaP(15,1,20,31)
+  areaC: AreaP(51,1,51,1)
+  deposito: AreaC(50,50,50,50)
+robots
+  robot tipo2
+  comenzar
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+  fin
+  robot tipo1
+  variables
+    tamanio: numero
+    Ini1: numero
+    Ini2: numero
+    cantFlores: numero
+    quien: numero
+  comenzar
+    RecibirMensaje(quien,coordinador)
+    cantFlores:= 0
+    Ini1:= PosAv
+    Ini2:= PosCa
+    repetir 4
+      Random(tamanio,1,5)
+      hacerCuadrado(tamanio,cantFlores)
+      esperar(quien)
+      Ini2:= Ini2 + tamanio + 1
+      Pos(Ini1, Ini2)
+    esperar(quien)
+    Random(tamanio,1,5)
+    hacerCuadrado(tamanio,cantFlores)
+    llevarAlDeposito(cantFlores,Ini1,Ini2)
+  fin
+variables
+  rob1: tipo1
+  rob2: tipo1
+  rob3: tipo1
+  coordinador: tipo2
+comenzar
+  AsignarArea(coordinador,areaC)
+  AsignarArea(rob1,area1)
+  AsignarArea(rob1,deposito)
+  AsignarArea(rob2,area2)
+  AsignarArea(rob2,deposito)
+  AsignarArea(rob3,area3)
+  AsignarArea(rob3,deposito)
+  Iniciar(coordinador,51,1)
+  Iniciar(rob1,1,1)
+  Iniciar(rob2,8,1)
+  Iniciar(rob3,15,1)
+fin

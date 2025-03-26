@@ -1,0 +1,139 @@
+programa finalJunio
+areas
+  areaTeamFlor: AreaPC(6,1,6,2)
+  areaTeamPapel: AreaPC(6,3,6,4)
+  areaFiscalizador: AreaP(6,5,6,5)
+  juego: AreaC(1,1,5,5)
+robots
+  robot tipoFiscalizador
+  variables
+    primero:numero
+    quien:numero
+    cant:numero
+    termine:boolean
+  comenzar
+    EnviarMensaje(1,escondedorFlor)
+    EnviarMensaje(2,escondedorPapel)
+    EnviarMensaje(3,buscadorFlor)
+    EnviarMensaje(4,buscadorPapel)
+    termine:= F
+    primero:=0
+    mientras(termine = F)
+      RecibirMensaje(quien,*)
+      si(quien = 3)
+        RecibirMensaje(cant,buscadorFlor)
+        si(cant = 2)
+          EnviarMensaje(V,buscadorPapel)
+          termine:= V
+          primero:=1
+        EnviarMensaje(F,buscadorFlor)
+      sino
+        RecibirMensaje(cant,buscadorPapel)
+        si(cant = 2)
+          EnviarmMensaje(V,buscadorFlor)
+          termine:=V
+          primero:=2
+        EnviarMensaje(F,buscadorPapel)
+    si(primero = 1)
+      Informar('team Flor',primero)
+    sino
+      Informar('team Papel',primero)
+  fin
+  robot tipoEscondedor
+  variables
+    quien:numero
+    ave:numero
+    calle:numero
+    x:numero
+    y:numero
+  comenzar
+    RecibirMensaje(quien,fiscalizador)
+    ave:=PosAv
+    calle:=PosCa
+    si(quien = 1)
+      repetir 2
+        tomarFlor
+    sino
+      repetir 2
+        tomarPapel
+    repetir 2
+      Random(x,1,5)
+      Random(y,1,5)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      si(quien = 1)
+        depositarFlor
+      sino
+        depositarPapel
+      Pos(ave,calle)
+      LiberarEsquina(x,y)
+    si(quien = 1)
+      EnviarMensaje(V,buscadorPapel)
+    sino
+      EnviarMensaje(V,buscadorFlor)
+  fin
+  robot tipoBuscador
+  variables
+    termino:boolean
+    termine:boolean
+    quien:numero
+    cant:numero
+    listo:boolean
+    ave:numero
+    calle:numero
+    x:numero
+    y:numero
+  comenzar
+    ave:=PosAv
+    calle:=PosCa
+    cant:=0
+    RecibirMensaje(quien,fiscalizador)
+    si(quien = 3)
+      RecibirMensaje(listo,escondedorPapel)
+    sino
+      RecibirMensaje(listo,escondedorFlor)
+    termine:= F
+    mientras(termine = F)
+      EnviarMensaje(quien,fiscalizador)
+      EnviarMensaje(cant,fiscalizador)
+      RecibirMensaje(termino,fiscalizador)
+      termine:= termino
+      Random(x,1,5)
+      Random(y,1,5)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      si(quien = 3)
+        si(HayPapelEnLaEsquina)
+          tomarPapel
+          cant:= cant + 1
+      sino
+        si(HayFlorEnLaEsquina)
+          tomarFlor
+          cant:= cant + 1
+      Pos(ave,calle)
+      LiberarEsquina(x,y)
+      si(cant = 2)
+        termine:= V
+  fin
+variables
+  escondedorFlor: tipoEscondedor
+  escondedorPapel: tipoEscondedor
+  buscadorFlor: tipoBuscador
+  buscadorPapel: tipoBuscador
+  fiscalizador : tipoFiscalizador
+comenzar
+  AsignarArea(fiscalizador,areaFiscalizador)
+  AsignarArea(escondedorFlor,juego)
+  AsignarArea(escondedorPapel,juego)
+  AsignarArea(buscadorFlor,juego)
+  AsignarArea(buscadorPapel,juego)
+  AsignarArea(escondedorFlor,areaTeamFlor)
+  AsignarArea(buscadorFlor,areaTeamFlor)
+  AsignarArea(escondedorPapel,areaTeamPapel)
+  AsignarArea(buscadorPapel,areaTeamPapel)
+  Iniciar(fiscalizador,6,5)
+  Iniciar(escondedorFlor,6,1)
+  Iniciar(buscadorFlor,6,2)
+  Iniciar(escondedorPapel,6,3)
+  Iniciar(buscadorPapel,6,4)
+fin
